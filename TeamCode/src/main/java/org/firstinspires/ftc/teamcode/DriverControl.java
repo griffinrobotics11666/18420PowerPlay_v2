@@ -10,6 +10,8 @@ import com.qualcomm.robotcore.util.Range;
 public class DriverControl extends OpMode {
     private ElapsedTime runtime = new ElapsedTime(); //clock
 
+    //
+
     Hardwarerobot robot   = new Hardwarerobot();
     double slowfactor = 0.5;
     static final double ARM_POWER_LIMIT = .5;
