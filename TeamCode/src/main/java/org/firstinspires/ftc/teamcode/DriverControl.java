@@ -15,8 +15,8 @@ public class DriverControl extends OpMode {
     Hardwarerobot robot   = new Hardwarerobot();
     double slowfactor = 0.5;
     static final double ARM_POWER_LIMIT = .5;
-    static double CLAW_CLOSED_POSITION = .27; // flip closed and open
-    static double CLAW_OPENED_POSITION = .08;
+    static double CLAW_OPENED_POSITION = .90; // flip closed and open
+    static double CLAW_CLOSED_POSITION = 1;
     static double ARM_COUNTS_PER_INCH = 114.75; //Figure out right number
     int newTarget=0;
     /*
@@ -61,6 +61,7 @@ public class DriverControl extends OpMode {
         double strafe = gamepad1.left_stick_x;
         double addToClaw = .0001;
 
+
         if (gamepad2.a){
             robot.claw.setPosition(CLAW_CLOSED_POSITION);
         }
@@ -68,7 +69,9 @@ public class DriverControl extends OpMode {
             robot.claw.setPosition(CLAW_OPENED_POSITION);
         }
 
-        /*
+
+
+/*
         if (gamepad1.dpad_up){
             CLAW_OPENED_POSITION = CLAW_OPENED_POSITION + addToClaw;
         }
@@ -81,8 +84,7 @@ public class DriverControl extends OpMode {
         if (gamepad1.dpad_right){
             CLAW_CLOSED_POSITION = CLAW_CLOSED_POSITION - addToClaw;
         }
-
-         */
+*/
 
 
         if (-gamepad2.left_stick_y>.1){ //me when go up
@@ -107,7 +109,6 @@ public class DriverControl extends OpMode {
             robot.armExtendor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         }
 
-
         if (gamepad2.dpad_down) {
             goTo0();
         }
@@ -128,7 +129,7 @@ public class DriverControl extends OpMode {
         //haha look see? this is so beautiful. you smell. <3
 
 
-        armExtendorPower = Range.scale(extend,-1 ,1,-ARM_POWER_LIMIT,ARM_POWER_LIMIT);
+        //armExtendorPower = Range.scale(extend,-1 ,1,-ARM_POWER_LIMIT,ARM_POWER_LIMIT);
         leftFrontPower = Range.clip(drive + turn + strafe, -1.0, 1.0);
         leftBackPower = Range.clip(drive + turn - strafe, -1.0, 1.0);
         rightFrontPower = Range.clip(drive - turn - strafe, -1.0, 1.0);
@@ -157,7 +158,9 @@ public class DriverControl extends OpMode {
         telemetry.addData("Status", "Run Time: " + runtime.toString());
         telemetry.addData("Motors", "left (%.2f), right (%.2f)", leftFrontPower, rightFrontPower);
         telemetry.addData("claw", "open (%.2f), closed (%.2f)", CLAW_OPENED_POSITION, CLAW_CLOSED_POSITION);
-        telemetry.addData("arm", "arm_status (%.2f)",ARM_COUNTS_PER_INCH);
+        telemetry.addData("arm", "arm_status (%.2f)",robot.armExtendor.getCurrentPosition()/ARM_COUNTS_PER_INCH);
+        telemetry.addData("servo position",robot.claw.getPosition());
+        telemetry.update();
     }
 
     @Override
@@ -170,22 +173,22 @@ public class DriverControl extends OpMode {
         robot.armExtendor.setTargetPosition(newTarget);
     }
     public void goTo1() {
-        double distance = 16;
+        double distance = 17;
         newTarget = (int) (distance * ARM_COUNTS_PER_INCH);
         robot.armExtendor.setTargetPosition(newTarget);
     }
     public void goTo2() {
-        double distance = 26;
+        double distance = 27;
         newTarget = (int) (distance * ARM_COUNTS_PER_INCH);
         robot.armExtendor.setTargetPosition(newTarget);
     }
     public void goTo3() {
-        double distance = 37;
+        double distance = 36;
         newTarget = (int) (distance * ARM_COUNTS_PER_INCH);
         robot.armExtendor.setTargetPosition(newTarget);
     }
     public void goTo4() {
-        double distance = 33;
+        double distance = 34;
         newTarget = (int) (distance * ARM_COUNTS_PER_INCH);
         robot.armExtendor.setTargetPosition(newTarget);
     }

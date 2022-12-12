@@ -104,7 +104,7 @@ public class Hardwarerobot
         //leftClaw  = hwMap.get(Servo.class, "left_hand");
         // rightClaw = hwMap.get(Servo.class, "right_hand");
         //leftClaw.setPosition(MID_SERVO);
-        claw.setPosition(0);
+        claw.setPosition(1);
 
 
 
