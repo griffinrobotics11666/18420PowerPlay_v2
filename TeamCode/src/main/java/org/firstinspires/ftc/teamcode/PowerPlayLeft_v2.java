@@ -110,7 +110,7 @@ public class PowerPlayLeft_v2 extends LinearOpMode
         robot.armExtendor.setPower(1);
         telemetry.addData("Snapshot post-START analysis", getAnalysis);
         telemetry.update();
-
+        //hiiiiii mr. roper!!!!!!!!!!!! :)
 
         closeClaw();
         gyroDrive(1,5,0);
