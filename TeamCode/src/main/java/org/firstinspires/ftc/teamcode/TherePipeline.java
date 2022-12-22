@@ -20,7 +20,7 @@ public class TherePipeline extends OpenCvPipeline {
     }
 
     boolean viewportPaused = false;
-    static final Point THEREBOX_TOPRIGHT_ANCHOR_POINT = new Point (200,110);
+    static final Point THEREBOX_TOPRIGHT_ANCHOR_POINT = new Point (175,110);
     static final int THEREBOX_WIDTH = 40;
     static final int THEREBOX_HEIGHT = 40;//was 20
     public String color = "RED";

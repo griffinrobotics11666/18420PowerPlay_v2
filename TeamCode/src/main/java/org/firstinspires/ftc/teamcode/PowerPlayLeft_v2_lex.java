@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode;
 
+import com.acmerobotics.dashboard.FtcDashboard;
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
@@ -22,14 +23,10 @@ import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
 import org.openftc.easyopencv.OpenCvWebcam;
 
-import com.acmerobotics.dashboard.FtcDashboard;
-import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
-import org.firstinspires.ftc.robotcore.external.Telemetry;
-
 import java.util.Locale;
 
-@Autonomous(name = "Left Autonomous PP v2", group = "Autonomous")
-public class PowerPlayLeft_v2 extends LinearOpMode
+@Autonomous(name = "Left Autonomous PP v2 lex", group = "Autonomous")
+public class PowerPlayLeft_v2_lex extends LinearOpMode
 {
     FtcDashboard dashboard = FtcDashboard.getInstance();
 
@@ -112,6 +109,21 @@ public class PowerPlayLeft_v2 extends LinearOpMode
         telemetry.update();
         //go so fast!!!!!!!!!
         closeClaw();
+//        goToHeight(20);
+//        gyroDrive(.6,54.5,0);
+//        gyroDrive(.6,-5,0);
+//        gyroTurn(.6,-30);
+//        sleep(200);
+//        gyroDrive(.6,7,-30);
+//        goToHeight(46);
+//        sleep(1200);
+//        openClaw();
+//        sleep(700);
+//        gyroDrive(.6,-8,-30);
+//        sleep(100);
+//        goToHeight(20);
+//        gyroTurn(.6,125);
+        closeClaw();
         gyroDrive(1,5,0);
         goToHeight(20);
         gyroTurn(.6,-35);
@@ -132,7 +144,7 @@ public class PowerPlayLeft_v2 extends LinearOpMode
         goToHeight(15);
         sleep(250);
         gyroDrive(.8,20,90);
-        gyroDrive(.4,9,90);
+        gyroDrive(.4,10,90);
         sleep(100);
         goToHeight(5);
         sleep(250);
@@ -170,47 +182,45 @@ public class PowerPlayLeft_v2 extends LinearOpMode
         gyroDrive(.6,-5,215);
         gyroTurn(.6,85);
         goToHeight(10);
-        sleep(500);
-        gyroDrive(.6,7,85);
+        sleep(100);
+        gyroDrive(.6,8,85);
         goToHeight(3);
         sleep(500);
         closeClaw();
         sleep(100);
         goToHeight(20);
         sleep(200);
-        gyroDrive(.6, -4,85);
+        gyroDrive(.6, -5,85);
         sleep(100);
         gyroTurn(.6,215);
         gyroDrive(.6,6,215);
         sleep(100);
         openClaw(); //drops fourth cone
-        sleep(100);
+        sleep(500);
         gyroDrive(1,-6,215);
-        sleep(500);
+        sleep(100);
         gyroTurn(.6,280);
-        sleep(500);
+        sleep(100);
         goToHeight(1);
+        gyroDrive(.6,19,280);
+        sleep(500);
 
-        switch (getAnalysis) {
-
-            case LEFT: {
-                gyroDrive(.6,-3,280);
-                gyroTurn(.6,280);
-                sleep(500);
-                break;
-            }
-            case CENTER: {
-                gyroDrive(.6,20,280);
-                sleep(500);
-                break;
-            }
-            case RIGHT: {
-                gyroDrive(.8,42,280);
-                gyroStrafe(.6,2,280);
-                sleep(500);
-                break;
-            }
-        }
+//        switch (getAnalysis) {
+//
+//            case LEFT: {
+//                gyroDrive(.6,-3,280);
+//                break;
+//            }
+//            case CENTER: {
+//                gyroDrive(.6,20,280);
+//                break;
+//            }
+//            case RIGHT: {
+//                gyroDrive(.8,42,280);
+//                gyroStrafe(.6,2,280);
+//                break;
+//            }
+       // }
     }
 
     public void encoderDrive(double speed,
