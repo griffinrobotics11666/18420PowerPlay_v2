@@ -49,13 +49,13 @@ public class PowerPlayAutonomousLeft extends LinearOpMode
     static final double     DRIVE_SPEED             = 0.6;
     static final double     TURN_SPEED              = 0.5;
 
-    static final double     HEADING_THRESHOLD       = .1 ;
-    static final double     P_TURN_COEFF            = 0.1;
+    static final double     HEADING_THRESHOLD       = .5 ;
+    static final double     P_TURN_COEFF            = 0.075;
     static final double     P_DRIVE_COEFF           = 0.05;
-    static double ARM_COUNTS_PER_INCH = 114.75; //Figure out right number
+    static double ARM_COUNTS_PER_INCH = 80; //Figure out right number
     int newTarget=0;
-    static double CLAW_CLOSED_POSITION = .28; // flip closed and open
-    static double CLAW_OPENED_POSITION = .08;
+    static double CLAW_CLOSED_POSITION = 1; // flip closed and open
+    static double CLAW_OPENED_POSITION = .90;
 
 
     @Override
@@ -106,101 +106,48 @@ public class PowerPlayAutonomousLeft extends LinearOpMode
         telemetry.addData("Snapshot post-START analysis", getAnalysis);
         telemetry.update();
 
+        closeClaw();
+        sleep(500);
+        goToHeight(10);
+        gyroDrive(.6, 35, 0);
+        sleep(1000);
+        gyroDrive(.6, -7, 0);
+        sleep(500);
+        gyroTurn(.6, -90);
+        sleep(500);
+        gyroDrive(.6, 20, -90);
+        gyroTurn(.6, -46);
+        sleep(500);
+        gyroDrive(.4, 8, -46);
+        sleep(100);
+        goToHeight(45);
+        sleep(3000);
+        gyroDrive(.4,1,-46);
+        sleep(300);
+        openClaw();
+        sleep(500);
+        gyroDrive(.6, -6, -46);
+        sleep(500);
+        goToHeight(1);
+        sleep(300);
+        gyroTurn(.6, 0);
+        sleep(300);
+        gyroTurn(.6,85);
+
 
 
         switch (getAnalysis) {
 
             case LEFT: {
-                //F5
-                closeClaw();
-                sleep(500);
-                gyroDrive(.4, 35, 0);
-                sleep(1000);
-                gyroDrive(.4, -8, 0);
-                sleep(500);
-                gyroTurn(.4, -90);
-                gyroDrive(.4, 20, -90);
-                gyroTurn(.4, -47);
-                sleep(500);
-                goTo3();
-                sleep(3000);
-                gyroDrive(.4, 10, -47);
-                sleep(1000);
-                goTo4();
-                sleep(500);
-                openClaw();
-                sleep(500);
-                gyroDrive(.4, -9, -47);
-                sleep(500);
-                goTo0();
-                sleep(3000);
-                closeClaw();
-                gyroTurn(.4, 0);
-                sleep(500);
-                gyroDrive(.4,-3,-47);
-                sleep(700);
-                gyroTurn(.4,90);
-                gyroDrive(.4,40,90);
                 break;
             }
 
             case CENTER: {
-                closeClaw();
-                sleep(500);
-                gyroDrive(.4, 35, 0);
-                sleep(1000);
-                gyroDrive(.4, -10, 0);
-                sleep(500);
-                gyroTurn(.4, -90);
-                sleep(500);
-                gyroDrive(.4, 20, -90);
-                sleep(500);
-                gyroTurn(.2, -45);
-                sleep(500);
-                goTo3();
-                sleep(3500);
-                gyroDrive(.2, 15, -45);
-                sleep(1000);
-                goTo4();
-                sleep(500);
-                openClaw();
-                sleep(500);
-                gyroDrive(.4, -9, -45);
-                goTo0();
-                sleep(3000);
-                closeClaw();
-                gyroTurn(.4, 0);
-                sleep(500);
-                gyroTurn(.4,90);
-                gyroDrive(.4,20,90);
                 break;
             }
 
 
             case RIGHT: {
-
-                closeClaw();
-                sleep(500);
-                gyroDrive(.4, 35, 0);
-                sleep(1000);
-                gyroDrive(.4, -10, 0);
-                sleep(500);
-                gyroTurn(.4, -90);
-                gyroDrive(.4, 20, -90);
-                gyroTurn(.4, -47);
-                sleep(500);
-                goTo3();
-                sleep(3000);
-                gyroDrive(.4, 9, -47);
-                sleep(500);
-                goTo4();
-                sleep(500);
-                openClaw();
-                sleep(500);
-                gyroDrive(.4, -10, -47);
-                goTo0();
-                sleep(3000);
-                gyroTurn(.4, 0);
                 break;
             }
 
@@ -563,6 +510,11 @@ public class PowerPlayAutonomousLeft extends LinearOpMode
 
     public void goTo4() {
         double distance = 33;
+        newTarget = (int) (distance * ARM_COUNTS_PER_INCH);
+        robot.armExtendor.setTargetPosition(newTarget);
+    }
+    public void goToHeight(double distance) {
+
         newTarget = (int) (distance * ARM_COUNTS_PER_INCH);
         robot.armExtendor.setTargetPosition(newTarget);
     }

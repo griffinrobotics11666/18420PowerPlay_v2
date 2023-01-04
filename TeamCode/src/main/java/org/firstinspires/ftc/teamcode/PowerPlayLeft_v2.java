@@ -113,100 +113,100 @@ public class PowerPlayLeft_v2 extends LinearOpMode
         //go so fast!!!!!!!!!
         closeClaw();
         gyroDrive(1,5,0);
-        goToHeight(20);
-        gyroTurn(.6,-35);
-        sleep(200);
-        gyroDrive(.8,7,-35);
+        goToHeight(19);
+        gyroTurn(.6,-32);
         sleep(100);
-        openClaw();
+        gyroDrive(.8,7,-32);
+        sleep(100);
+        openClaw();                                     //first cone dropped
         sleep(150);
-        gyroDrive(.8,-10,-35);
-        sleep(200);
-        gyroTurn(.6,0);
+        gyroDrive(.8,-8,-32);
+        sleep(150);
+        gyroTurn(.6,3);
         sleep(100);
-        gyroDrive(.8,60,0);
-        sleep(250);
-        gyroDrive(.8, -11, 0);
+        gyroDrive(.8,60,3);
+        sleep(300);
+        gyroDrive(.8, -12, 3);
         sleep(250);
         gyroTurn(.6,90);
         goToHeight(15);
         sleep(250);
-        gyroDrive(.8,20,90);
-        gyroDrive(.4,9,90);
+        gyroDrive(.6,28,90);
         sleep(100);
         goToHeight(5);
-        sleep(250);
+        sleep(300);
         closeClaw();
-        sleep(250);
+        sleep(200);
         goToHeight(20);
         sleep(250);
         gyroDrive(.6, -8,90);
         gyroTurn(.4,200);
-        sleep(250);
-        gyroDrive(.6,5,200);
         sleep(100);
-        openClaw();  //drops second cone
+        gyroDrive(.6,6,200);
+        sleep(100);
+        openClaw();                                      //drops second cone
         sleep(250);
-        gyroDrive(.8,-4, 200);
+        gyroDrive(.8,-5, 200);
         goToHeight(10);
         sleep(100);
-        gyroTurn(.6,90);
+        gyroTurn(.6,95);
         sleep(100);
-        gyroDrive(.6,10,90);
+        gyroDrive(.6,10,95);
         sleep(100);
         goToHeight(3);
-        sleep(100);
+        sleep(200);
         closeClaw();
-        sleep(300);
+        sleep(200);
         goToHeight(20);
         sleep(250);
-        gyroDrive(.4, -5,90);
+        gyroDrive(.4, -5,95);
         sleep(100);
         gyroTurn(.6,215);
         sleep(100);
-        gyroDrive(.6,7,215);
-        openClaw();//third cone dropped
+        gyroDrive(.6,6,215);
+        openClaw();                                    //third cone dropped
         sleep(100);
-        gyroDrive(.6,-5,215);
-        gyroTurn(.6,85);
+        gyroDrive(.6,-6,215);
+        sleep(150);
+        gyroTurn(.6,90);
         goToHeight(10);
-        sleep(500);
-        gyroDrive(.6,7,85);
+        sleep(250);
+        gyroDrive(.6,6,90);
         goToHeight(3);
         sleep(500);
         closeClaw();
-        sleep(100);
+        sleep(200);
         goToHeight(20);
         sleep(200);
-        gyroDrive(.6, -4,85);
+        gyroDrive(.6, -5,90);
         sleep(100);
         gyroTurn(.6,215);
-        gyroDrive(.6,6,215);
+        gyroDrive(.6,7,215);
         sleep(100);
-        openClaw(); //drops fourth cone
+        openClaw();                                      //drops fourth cone
         sleep(100);
         gyroDrive(1,-6,215);
         sleep(500);
-        gyroTurn(.6,280);
-        sleep(500);
+        gyroTurn(.6,275);
+        sleep(300);
         goToHeight(1);
 
         switch (getAnalysis) {
 
             case LEFT: {
-                gyroDrive(.6,-3,280);
+                gyroDrive(.6,-4,275);
                 gyroTurn(.6,280);
                 sleep(500);
                 break;
             }
             case CENTER: {
-                gyroDrive(.6,20,280);
+                gyroDrive(.6,20,275);
                 sleep(500);
                 break;
             }
             case RIGHT: {
-                gyroDrive(.8,42,280);
-                gyroStrafe(.6,2,280);
+                gyroDrive(.8,43,275);
+                gyroStrafe(.6,2,275);
                 sleep(500);
                 break;
             }
