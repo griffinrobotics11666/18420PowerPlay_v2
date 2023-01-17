@@ -118,15 +118,15 @@ public class PowerPlayAutonomousRight extends LinearOpMode
         gyroTurn(.6,90);
         sleep(500);
         gyroDrive(.6,20,90);
-        gyroTurn(.6,52);
+        gyroTurn(.6,55);
         sleep(500);
-        gyroDrive(.4,12, 52);
+        gyroDrive(.4,11, 55);
         sleep(100);
         goToHeight(32);
         sleep(3000);
         openClaw();
         sleep(500);
-        gyroDrive(.6,-6,52);
+        gyroDrive(.6,-6,55);
         sleep(500);
         goToHeight(1);
         sleep(300);
@@ -142,7 +142,7 @@ public class PowerPlayAutonomousRight extends LinearOpMode
             }
 
             case CENTER: {
-                gyroDrive(.6,24,-85);
+                gyroDrive(.6,22,-85);
                 break;
             }
 
