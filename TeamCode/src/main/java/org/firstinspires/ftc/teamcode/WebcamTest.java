@@ -46,7 +46,7 @@ import org.openftc.easyopencv.OpenCvWebcam;
 
 public class WebcamTest extends OpMode {
   OpenCvWebcam webcam;
-  TherePipeline pipeline = new TherePipeline();
+  WherePipeline pipeline = new WherePipeline();
   private ElapsedTime runtime = new ElapsedTime();
 
   @Override
@@ -70,7 +70,6 @@ public class WebcamTest extends OpMode {
 
     telemetry.addLine("Waiting for start");
     telemetry.update();
-
   }
 
   @Override
@@ -81,16 +80,64 @@ public class WebcamTest extends OpMode {
     telemetry.addData("Pipeline time ms", webcam.getPipelineTimeMs());
     telemetry.addData("Overhead time ms", webcam.getOverheadTimeMs());
     telemetry.addData("Theoretical max FPS", webcam.getCurrentPipelineMaxFps());
-    telemetry.addData("Analysis", "cone state is "+ pipeline.getAnalysis());
+    telemetry.addData("Hue Min Threshold", pipeline.HThreshLow);
+    telemetry.addData("Hue Max Threshold", pipeline.HThreshHigh);
+    telemetry.addData("Saturation Min Threshold", pipeline.SThreshLow);
+    telemetry.addData("Saturation Max Threshold", pipeline.SThreshHigh);
+    telemetry.addData("Value Min Threshold", pipeline.VThreshLow);
+    telemetry.addData("Value Max Threshold", pipeline.VThreshHigh);
     telemetry.update();
 
-    if (gamepad1.a) {
-
-      webcam.stopStreaming();
+    if (gamepad1.dpad_up && pipeline.HThreshLow < 255) {
+      pipeline.HThreshLow += .05;
+    }
+    if (gamepad1.dpad_down && pipeline.HThreshLow > 0) {
+      pipeline.HThreshLow -= .05;
     }
 
-    //TODO figure out how to delay/sleep
+    if (gamepad2.dpad_up && pipeline.HThreshHigh < 255) {
+      pipeline.HThreshHigh += .05;
+    }
+    if (gamepad2.dpad_down && pipeline.HThreshHigh > 0) {
+      pipeline.HThreshHigh -= .05;
+    }
+
+    if (gamepad1.a && pipeline.SThreshLow < 255) {
+      pipeline.SThreshLow += .05;
+    }
+    if (gamepad1.b && pipeline.SThreshLow > 0) {
+      pipeline.SThreshLow -= .05;
+    }
+
+    if (gamepad2.a&& pipeline.SThreshHigh < 255) {
+      pipeline.SThreshHigh += .05;
+    }
+    if (gamepad2.b && pipeline.SThreshHigh > 0) {
+      pipeline.SThreshHigh -= .05;
+    }
+
+    if (gamepad1.x && pipeline.VThreshLow < 255) {
+      pipeline.VThreshLow += .05;
+    }
+    if (gamepad1.y && pipeline.VThreshLow > 0) {
+      pipeline.VThreshLow -= .05;
+    }
+
+    if (gamepad2.x && pipeline.VThreshHigh < 255) {
+      pipeline.VThreshHigh += .05;
+    }
+    if (gamepad2.y && pipeline.VThreshHigh > 0) {
+      pipeline.VThreshHigh -= .05;
+    }
+
+
+   if (gamepad2.dpad_up && pipeline.startColumn < 160) {
+    pipeline.startColumn += .05;
   }
+    if (gamepad2.y && pipeline.endColumn >= 160) {
+    pipeline.endColumn -= .05;
+  }
+}
 
   @Override
   public void start() {
@@ -100,8 +147,5 @@ public class WebcamTest extends OpMode {
   @Override
   public void loop() {
     telemetry.addData("Status", "Run Time: " + runtime.toString());
-
-
   }
 }
-

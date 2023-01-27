@@ -58,15 +58,15 @@ public class PowerPlayLeft_v2 extends LinearOpMode
     static final double     P_TURN_COEFF            = 0.075; //TODO MODIFY THIS
     static final double     P_DRIVE_COEFF           = 0.05;
     static double ARM_COUNTS_PER_INCH = 80; //Figure out right number // 114.75
-    int newTarget=0;
+    int newTarget = 0;
     static double CLAW_CLOSED_POSITION = 1; // flip closed and open
     static double CLAW_OPENED_POSITION = .90;
 
 
     @Override
     public void runOpMode() {
+        //int urDad
         robot.init(hardwareMap);
-        // int urMom;
         BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
         parameters.angleUnit = BNO055IMU.AngleUnit.DEGREES;
         parameters.accelUnit = BNO055IMU.AccelUnit.METERS_PERSEC_PERSEC;
@@ -118,20 +118,21 @@ public class PowerPlayLeft_v2 extends LinearOpMode
         sleep(100);
         gyroDrive(.8,7,-32);
         sleep(100);
-        openClaw();                                     //first cone dropped
+        openClaw();                                     //drops first cone
         sleep(150);
-        gyroDrive(.8,-8,-32);
+        gyroDrive(.8,-9,-32);
         sleep(150);
-        gyroTurn(.6,3);
+        gyroTurn(.6,2);
         sleep(100);
-        gyroDrive(.8,60,3);
+        gyroDrive(.8,55,2);
+        gyroDrive(.6,5,2);
         sleep(300);
-        gyroDrive(.8, -12, 3);
+        gyroDrive(.8, -9, 2);
         sleep(250);
         gyroTurn(.6,90);
         goToHeight(15);
         sleep(250);
-        gyroDrive(.6,28,90);
+        gyroDrive(.6,27,90);
         sleep(100);
         goToHeight(5);
         sleep(300);
@@ -139,40 +140,41 @@ public class PowerPlayLeft_v2 extends LinearOpMode
         sleep(200);
         goToHeight(20);
         sleep(250);
-        gyroDrive(.6, -8,90);
-        gyroTurn(.4,200);
+        gyroDrive(.6, -7,90);
+        gyroTurn(.4,210);
         sleep(100);
-        gyroDrive(.6,6,200);
+        gyroDrive(.6,5,210);
         sleep(100);
-        openClaw();                                      //drops second cone
+        openClaw();                                   //drops second cone
         sleep(250);
-        gyroDrive(.8,-5, 200);
+        gyroDrive(.8,-4, 210);
         goToHeight(10);
         sleep(100);
-        gyroTurn(.6,95);
+        gyroTurn(.6,85);
         sleep(100);
-        gyroDrive(.6,10,95);
-        sleep(100);
+        gyroDrive(.6,9,85);
+        sleep(200);
         goToHeight(3);
         sleep(200);
         closeClaw();
         sleep(200);
         goToHeight(20);
         sleep(250);
-        gyroDrive(.4, -5,95);
+        gyroDrive(.4, -5,85);
         sleep(100);
-        gyroTurn(.6,215);
+        gyroTurn(.6,225);
         sleep(100);
-        gyroDrive(.6,6,215);
-        openClaw();                                    //third cone dropped
+        gyroDrive(.6,7,225);
         sleep(100);
-        gyroDrive(.6,-6,215);
+        openClaw();                                    //drops third cone
+        sleep(100);
+        gyroDrive(.6,-6,225);
         sleep(150);
         gyroTurn(.6,90);
         goToHeight(10);
         sleep(250);
         gyroDrive(.6,6,90);
-        goToHeight(3);
+        goToHeight(3.5);
         sleep(500);
         closeClaw();
         sleep(200);
@@ -180,37 +182,38 @@ public class PowerPlayLeft_v2 extends LinearOpMode
         sleep(200);
         gyroDrive(.6, -5,90);
         sleep(100);
-        gyroTurn(.6,215);
-        gyroDrive(.6,7,215);
+        gyroTurn(.6,220);
+        gyroDrive(.6,7,220);
         sleep(100);
         openClaw();                                      //drops fourth cone
         sleep(100);
-        gyroDrive(1,-6,215);
+        gyroDrive(1,-6,220);
         sleep(500);
         gyroTurn(.6,275);
         sleep(300);
         goToHeight(1);
+        //eighty point penalty!!!!!!
 
         switch (getAnalysis) {
 
-            case LEFT: {
-                gyroDrive(.6,-4,275);
+            case LEFT: { //one, red
+                gyroDrive(.6,-5,275);
                 gyroTurn(.6,280);
                 sleep(500);
                 break;
             }
-            case CENTER: {
+            case CENTER: { //two, blue
                 gyroDrive(.6,20,275);
                 sleep(500);
                 break;
             }
-            case RIGHT: {
+            case RIGHT: { //three, green
                 gyroDrive(.8,43,275);
                 gyroStrafe(.6,2,275);
                 sleep(500);
                 break;
             }
-        }
+        } //barely works lol
     }
 
     public void encoderDrive(double speed,
@@ -328,18 +331,6 @@ public class PowerPlayLeft_v2 extends LinearOpMode
                     rightSpeed /= max;
                 }
 
-                /*reduce speed if close to target
-                if((Math.abs(robot.leftFrontDrive.getCurrentPosition()-newLeftFrontTarget)/newLeftFrontTarget < .25 ) &&
-                        (Math.abs(robot.leftBackDrive.getCurrentPosition()-newLeftBackTarget)/newLeftBackTarget < .25 ) &&
-                (Math.abs(robot.rightFrontDrive.getCurrentPosition()-newRightFrontTarget)/newRightFrontTarget < .25 ) &&
-                (Math.abs(robot.rightBackDrive.getCurrentPosition()-newRightBackTarget)/newRightBackTarget < .25 )
-                ){
-                    leftSpeed = leftSpeed/2;
-                    rightSpeed = rightSpeed/2;
-                }
-                */
-
-
                 robot.leftFrontDrive.setPower(leftSpeed);
                 robot.leftBackDrive.setPower(leftSpeed);
                 robot.rightFrontDrive.setPower(rightSpeed);
@@ -353,10 +344,6 @@ public class PowerPlayLeft_v2 extends LinearOpMode
             robot.leftBackDrive.setPower(0);
             robot.rightFrontDrive.setPower(0);
             robot.rightBackDrive.setPower(0);
-            //robot.leftFrontDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-            //robot.leftBackDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-            //robot.rightFrontDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-            //robot.rightBackDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
             robot.leftFrontDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             robot.leftBackDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             robot.rightFrontDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
@@ -404,8 +391,6 @@ public class PowerPlayLeft_v2 extends LinearOpMode
             rightSpeed  = speed * steer;
             leftSpeed   = -rightSpeed;
         }
-
-
 
         robot.leftFrontDrive.setPower(leftSpeed);
         robot.leftBackDrive.setPower(leftSpeed);
@@ -591,24 +576,10 @@ public class PowerPlayLeft_v2 extends LinearOpMode
         robot.armExtendor.setTargetPosition(newTarget);
     }
 
-
     public void openClaw() {
         robot.claw.setPosition(CLAW_OPENED_POSITION);
     }
     public void closeClaw() {
         robot.claw.setPosition(CLAW_CLOSED_POSITION);
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
 }

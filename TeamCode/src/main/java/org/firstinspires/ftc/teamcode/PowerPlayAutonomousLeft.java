@@ -116,42 +116,38 @@ public class PowerPlayAutonomousLeft extends LinearOpMode
         gyroTurn(.6, -90);
         sleep(500);
         gyroDrive(.6, 20, -90);
-        gyroTurn(.6, -46);
+        gyroTurn(.6, -40);
         sleep(500);
-        gyroDrive(.4, 8, -46);
+        gyroDrive(.4, 7, -40);
+        sleep(100);
+        gyroDrive(.4,1,-40);
         sleep(100);
         goToHeight(45);
         sleep(3000);
-        gyroDrive(.4,1,-46);
         sleep(300);
         openClaw();
         sleep(500);
-        gyroDrive(.6, -6, -46);
+        gyroDrive(.4, -6, -40);
         sleep(500);
         goToHeight(1);
-        sleep(300);
-        gyroTurn(.6, 0);
-        sleep(300);
-        gyroTurn(.6,85);
-
-
+        sleep(3000);
+        gyroTurn(.6, 95);
 
         switch (getAnalysis) {
 
-            case LEFT: {
+            case LEFT: { //one
+                gyroDrive(.6,48,95);
                 break;
             }
 
-            case CENTER: {
+            case CENTER: { //two
+                gyroDrive(.6,24,95);
                 break;
             }
 
-
-            case RIGHT: {
+            case RIGHT: { //three
                 break;
             }
-
-
         }
     }
 
@@ -519,18 +515,10 @@ public class PowerPlayAutonomousLeft extends LinearOpMode
         robot.armExtendor.setTargetPosition(newTarget);
     }
 
-
     public void openClaw() {
         robot.claw.setPosition(CLAW_OPENED_POSITION);
     }
     public void closeClaw() {
         robot.claw.setPosition(CLAW_CLOSED_POSITION);
     }
-
-
-
-
-
-
-
 }

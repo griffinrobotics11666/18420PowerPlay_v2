@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode;
 
+import com.acmerobotics.dashboard.FtcDashboard;
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
@@ -24,9 +25,10 @@ import org.openftc.easyopencv.OpenCvWebcam;
 
 import java.util.Locale;
 
-@Autonomous(name = "Right Autonomous PP", group = "Autonomous")
-public class PowerPlayAutonomousRight extends LinearOpMode
+@Autonomous(name = "Right Autonomous PP v2", group = "Autonomous")
+public class PowerPlayRight_v2 extends LinearOpMode
 {
+    FtcDashboard dashboard = FtcDashboard.getInstance();
 
     OpenCvWebcam webcam;
     Hardwarerobot robot = new Hardwarerobot();
@@ -36,6 +38,8 @@ public class PowerPlayAutonomousRight extends LinearOpMode
     BNO055IMU imu;
     Orientation angles;
     Acceleration gravity;
+
+    //Don't touch or you'll be sorry
 
     private ElapsedTime runtime = new ElapsedTime();
 
@@ -50,24 +54,23 @@ public class PowerPlayAutonomousRight extends LinearOpMode
     static final double     TURN_SPEED              = 0.5;
 
     static final double     HEADING_THRESHOLD       = .5 ;
-    static final double     P_TURN_COEFF            = 0.075;
+    static final double     P_TURN_COEFF            = 0.075; //TODO MODIFY THIS
     static final double     P_DRIVE_COEFF           = 0.05;
-    static double ARM_COUNTS_PER_INCH = 114.75; //Figure out right number
+    static double ARM_COUNTS_PER_INCH = 80; //Figure out right number // 114.75
     int newTarget=0;
-    static double CLAW_CLOSED_POSITION = 1; // flip closed and open
+    static double CLAW_CLOSED_POSITION = 1.1; // flip closed and open
     static double CLAW_OPENED_POSITION = .90;
-
 
     @Override
     public void runOpMode() {
         robot.init(hardwareMap);
         // int urMom;
         BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
-        parameters.angleUnit           = BNO055IMU.AngleUnit.DEGREES;
-        parameters.accelUnit           = BNO055IMU.AccelUnit.METERS_PERSEC_PERSEC;
+        parameters.angleUnit = BNO055IMU.AngleUnit.DEGREES;
+        parameters.accelUnit = BNO055IMU.AccelUnit.METERS_PERSEC_PERSEC;
         parameters.calibrationDataFile = "BNO055IMUCalibration.json"; // see the calibration sample opmode
-        parameters.loggingEnabled      = true;
-        parameters.loggingTag          = "IMU";
+        parameters.loggingEnabled = true;
+        parameters.loggingTag = "IMU";
         parameters.accelerationIntegrationAlgorithm = new JustLoggingAccelerationIntegrator();
         imu = hardwareMap.get(BNO055IMU.class, "imu");
         imu.initialize(parameters);
@@ -88,8 +91,8 @@ public class PowerPlayAutonomousRight extends LinearOpMode
             }
         });
         imu.startAccelerationIntegration(new Position(), new Velocity(), 1000);
-        angles   = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
-        gravity  = imu.getGravity();
+        angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
+        gravity = imu.getGravity();
         robot.armExtendor.setTargetPosition(newTarget);
         robot.armExtendor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         robot.armExtendor.setPower(0);
@@ -99,56 +102,115 @@ public class PowerPlayAutonomousRight extends LinearOpMode
             telemetry.addData("Realtime analysis", pipeline.getAnalysis());
             telemetry.update();
             sleep(50);
-             
+
         }
         getAnalysis = pipeline.getAnalysis();
         robot.armExtendor.setPower(1);
         telemetry.addData("Snapshot post-START analysis", getAnalysis);
         telemetry.update();
-
-
         closeClaw();
-        sleep(500);
-        goToHeight(10);
-        gyroStrafe(.4,-3,0);
-        gyroDrive(.6,35,0);
-        sleep(300);
-        gyroDrive(.6,-7,0);
-        sleep(500);
-        gyroTurn(.6,90);
-        sleep(500);
-        gyroDrive(.6,20,90);
-        gyroTurn(.6,50);
-        sleep(500);
-        gyroDrive(.4,11, 50);
+        gyroDrive(1,5,0);
+        goToHeight(20);
+        gyroTurn(.8,43);
+        gyroDrive(.8,10,43);
         sleep(100);
-        goToHeight(31);
-        sleep(3000);
-        openClaw();
-        sleep(500);
-        gyroDrive(.4,-7,50);
-        goToHeight(1);
-        sleep(3000);
+        openClaw();                                     //drops first cone
+        sleep(100);
+        gyroDrive(.8,-7,43);
+        sleep(100);
+        gyroTurn(.6,0);
+        sleep(100);
+        gyroDrive(.8,50,0);
+        gyroTurn(.8,0);
+        sleep(100);
+        gyroDrive(.4,5,0);
+        sleep(100);
+        gyroDrive(.8, -7, 0);
+        sleep(100);
+        gyroTurn(.6,-90);
+        goToHeight(15);
+        sleep(100);
+        gyroDrive(.6,28,-90);
+        sleep(100);
+        gyroTurn(.6,-90);
+        goToHeight(5);
+        sleep(300);
+        closeClaw();
+        sleep(200);
+        goToHeight(20);
+        sleep(150);
+        gyroDrive(.6, -8,-90);
+        gyroTurn(.6,-200);
+        sleep(100);
+        gyroDrive(.6,6,-200);
+        sleep(100);
+        openClaw();                                  //drops second cone
+        sleep(100);
+        gyroDrive(.8,-5, -200);
+        goToHeight(12);
+        sleep(100);
+        gyroTurn(.8,-90);
+        sleep(100);
+        gyroDrive(.6,10,-90);
+        sleep(100);
+        goToHeight(3);
+        sleep(200);
+        closeClaw();
+        sleep(200);
+        goToHeight(20);
+        sleep(150);
+        gyroDrive(.6, -6,-90);
+        sleep(100);
+        gyroTurn(.6,-210);
+        sleep(100);
+        gyroDrive(.6,5,-210);
+        openClaw();                                    //drops third cone
+        sleep(100);
+        gyroDrive(.6,-5,-210);
+        sleep(100);
         gyroTurn(.6,-85);
+        goToHeight(10);
+        sleep(150);
+        gyroDrive(.6,8,-85);
+        goToHeight(4);
+        sleep(500);
+        closeClaw();
+        sleep(200);
+        goToHeight(20);
+        sleep(150);
+        gyroDrive(.6, -7,-85);
+        sleep(100);
+        gyroTurn(.6,-215);
+        gyroDrive(.6,8,-215);
+        sleep(100);
+        openClaw();                                      //drops fourth cone
+        sleep(100);
+        gyroDrive(1,-7,-215);
+        sleep(500);
+        gyroTurn(.8,-270);
+        sleep(200);
+        goToHeight(1);
+        //gonna fail every time
+        //so many penalties!!!
+        switch (getAnalysis) {
 
-        switch (getAnalysis)
-        {
             case LEFT: {
+                gyroDrive(.8,42,-270);
+                sleep(500);
                 break;
             }
-
             case CENTER: {
-                gyroDrive(.6,21,-85);
+                gyroDrive(1,20,-270);
+                sleep(500);
                 break;
             }
-
             case RIGHT: {
-                gyroDrive(.6,48,-85);
+                gyroDrive(1,-5,-270);
                 break;
             }
-
         }
     }
+
     public void encoderDrive(double speed,
                              double distance,
                              double timeoutS) {
@@ -324,6 +386,7 @@ public class PowerPlayAutonomousRight extends LinearOpMode
             rightSpeed  = speed * steer;
             leftSpeed   = -rightSpeed;
         }
+
         robot.leftFrontDrive.setPower(leftSpeed);
         robot.leftBackDrive.setPower(leftSpeed);
         robot.rightFrontDrive.setPower(rightSpeed);
@@ -486,8 +549,8 @@ public class PowerPlayAutonomousRight extends LinearOpMode
         newTarget = (int)(distance * ARM_COUNTS_PER_INCH);
         robot.armExtendor.setTargetPosition(newTarget);
     }
-    public void goTo1() {
-        double distance = 16;
+    public void goToHeight(double distance) {
+
         newTarget = (int) (distance * ARM_COUNTS_PER_INCH);
         robot.armExtendor.setTargetPosition(newTarget);
     }
@@ -501,13 +564,9 @@ public class PowerPlayAutonomousRight extends LinearOpMode
         newTarget = (int) (distance * ARM_COUNTS_PER_INCH);
         robot.armExtendor.setTargetPosition(newTarget);
     }
+
     public void goTo4() {
         double distance = 33;
-        newTarget = (int) (distance * ARM_COUNTS_PER_INCH);
-        robot.armExtendor.setTargetPosition(newTarget);
-    }
-    public void goToHeight(double distance) {
-
         newTarget = (int) (distance * ARM_COUNTS_PER_INCH);
         robot.armExtendor.setTargetPosition(newTarget);
     }
@@ -518,11 +577,4 @@ public class PowerPlayAutonomousRight extends LinearOpMode
     public void closeClaw() {
         robot.claw.setPosition(CLAW_CLOSED_POSITION);
     }
-
-
-
-
-
-
-
 }
