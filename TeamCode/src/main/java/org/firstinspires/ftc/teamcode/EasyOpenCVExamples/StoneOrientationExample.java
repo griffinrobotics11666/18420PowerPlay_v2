@@ -127,7 +127,7 @@ public class StoneOrientationExample extends LinearOpMode
         Mat cbMat = new Mat();
         Mat thresholdMat = new Mat();
         Mat morphedThreshold = new Mat();
-        Mat contoursOnPlainImageMat = new Mat();
+        Mat contoursOnPlainImageMat = new Mat(); //?
 
         /*
          * Threshold values

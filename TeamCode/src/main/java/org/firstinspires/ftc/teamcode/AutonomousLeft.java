@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
@@ -24,9 +25,8 @@ import org.openftc.easyopencv.OpenCvWebcam;
 
 import java.util.Locale;
 
-@Autonomous(name = "Right Autonomous PP", group = "Autonomous")
-public class PowerPlayAutonomousRight extends LinearOpMode
-{
+@Autonomous(name = "Autonomous Left", group = "Autonomous")
+public class AutonomousLeft extends LinearOpMode {
 
     OpenCvWebcam webcam;
     Hardwarerobot robot = new Hardwarerobot();
@@ -39,23 +39,24 @@ public class PowerPlayAutonomousRight extends LinearOpMode
 
     private ElapsedTime runtime = new ElapsedTime();
 
-    static final double     COUNTS_PER_MOTOR_REV    = 1440 ;
-    static final double     DRIVE_GEAR_REDUCTION    = 1.0 ;
-    static final double     WHEEL_DIAMETER_INCHES   = 4.5 ;
-    static final double     COUNTS_PER_INCH         = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) /
-            (WHEEL_DIAMETER_INCHES * 3.1415)/2.29; //find out actual number
-    static final double     STRAFE_COUNTS_PER_INCH  = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) /
-            (WHEEL_DIAMETER_INCHES * 3.1415)/1.86;
-    static final double     DRIVE_SPEED             = 0.6;
-    static final double     TURN_SPEED              = 0.5;
+    static final double COUNTS_PER_MOTOR_REV = 1440;
+    static final double DRIVE_GEAR_REDUCTION = 1.0;
+    static final double WHEEL_DIAMETER_INCHES = 4.5;
+    static final double COUNTS_PER_INCH = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) /
+            (WHEEL_DIAMETER_INCHES * 3.1415) / 2.29; //find out actual number
+    static final double STRAFE_COUNTS_PER_INCH = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) /
+            (WHEEL_DIAMETER_INCHES * 3.1415) / 1.86;
+    static final double DRIVE_SPEED = 0.6;
+    static final double TURN_SPEED = 0.5;
 
-    static final double     HEADING_THRESHOLD       = .5 ;
-    static final double     P_TURN_COEFF            = 0.075;
-    static final double     P_DRIVE_COEFF           = 0.05;
-    static double ARM_COUNTS_PER_INCH = 114.75; //Figure out right number
-    int newTarget=0;
-    static double CLAW_CLOSED_POSITION = 1; // flip closed and open
-    static double CLAW_OPENED_POSITION = .90;
+    static final double HEADING_THRESHOLD = .5;
+    static final double P_TURN_COEFF = 0.075;
+    static final double P_DRIVE_COEFF = 0.05;
+    static double ARM_COUNTS_PER_INCH = 80; //Figure out right number
+    int newTarget = 0;
+    static double CLAW_CLOSED_POSITION = 0; // flip closed and open
+    static double CLAW_OPENED_POSITION = .08;
+    static double ARMS_COUNT_PER_ANGLE = 7.7394;
 
 
     @Override
@@ -63,15 +64,15 @@ public class PowerPlayAutonomousRight extends LinearOpMode
         robot.init(hardwareMap);
         // int urMom;
         BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
-        parameters.angleUnit           = BNO055IMU.AngleUnit.DEGREES;
-        parameters.accelUnit           = BNO055IMU.AccelUnit.METERS_PERSEC_PERSEC;
+        parameters.angleUnit = BNO055IMU.AngleUnit.DEGREES;
+        parameters.accelUnit = BNO055IMU.AccelUnit.METERS_PERSEC_PERSEC;
         parameters.calibrationDataFile = "BNO055IMUCalibration.json"; // see the calibration sample opmode
-        parameters.loggingEnabled      = true;
-        parameters.loggingTag          = "IMU";
+        parameters.loggingEnabled = true;
+        parameters.loggingTag = "IMU";
         parameters.accelerationIntegrationAlgorithm = new JustLoggingAccelerationIntegrator();
         imu = hardwareMap.get(BNO055IMU.class, "imu");
         imu.initialize(parameters);
-        composeTelemetry();
+        //composeTelemetry();
 
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         webcam = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "Webcam 1"), cameraMonitorViewId);
@@ -88,67 +89,68 @@ public class PowerPlayAutonomousRight extends LinearOpMode
             }
         });
         imu.startAccelerationIntegration(new Position(), new Velocity(), 1000);
-        angles   = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
-        gravity  = imu.getGravity();
-        robot.armExtendor.setTargetPosition(newTarget);
-        robot.armExtendor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        robot.armExtendor.setPower(0);
+        angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
+        gravity = imu.getGravity();
+        robot.armExtendorR.setTargetPosition(newTarget);
+        robot.armExtendorL.setTargetPosition(newTarget);
+        robot.armExtendorR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        robot.armExtendorL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        robot.armExtendorR.setPower(0);
+        robot.armExtendorL.setPower(0);
         telemetry.addData(">", "Press Play to start op mode");
         telemetry.update();
         while (opModeInInit()) {
             telemetry.addData("Realtime analysis", pipeline.getAnalysis());
             telemetry.update();
             sleep(50);
-             
+
         }
         getAnalysis = pipeline.getAnalysis();
-        robot.armExtendor.setPower(1);
+        robot.armExtendorR.setPower(1);
+        robot.armExtendorL.setPower(1);
         telemetry.addData("Snapshot post-START analysis", getAnalysis);
         telemetry.update();
 
+       closeClaw();
+       gyroStrafe(.8,-3,0);
+       gyroDrive(.6,48,0);
+       sleep(300);
+       gyroTurn(.8,60);
+       sleep(1000);
+       gyroDrive(.4,5,60);
+       goTo2();
+       sleep(3000);
+       gyroDrive(.4,-4,60);
+       sleep(1000);
+       openClaw();
+       sleep(1000);
+       goTo1();
+       sleep(1000);
+       goToFlipper(1);
 
-        closeClaw();
-        sleep(500);
-        goToHeight(10);
-        gyroStrafe(.4,-3,0);
-        gyroDrive(.6,35,0);
-        sleep(300);
-        gyroDrive(.6,-7,0);
-        sleep(500);
-        gyroTurn(.6,90);
-        sleep(500);
-        gyroDrive(.6,20,90);
-        gyroTurn(.6,50);
-        sleep(500);
-        gyroDrive(.4,11, 50);
-        sleep(100);
-        goToHeight(31);
-        sleep(3000);
-        openClaw();
-        sleep(500);
-        gyroDrive(.4,-7,50);
-        goToHeight(1);
-        sleep(3000);
-        gyroTurn(.6,-85);
 
-        switch (getAnalysis)
-        {
-            case LEFT: {
+
+        /*switch (getAnalysis) {
+
+            case LEFT: { //one
+                gyroDrive(.6,48,95);
                 break;
             }
 
-            case CENTER: {
-                gyroDrive(.6,21,-85);
+            case CENTER: { //two
+                gyroDrive(.6,24,95);
                 break;
             }
 
-            case RIGHT: {
-                gyroDrive(.6,48,-85);
+            case RIGHT: { //three
                 break;
             }
 
         }
+
+         */
     }
+
     public void encoderDrive(double speed,
                              double distance,
                              double timeoutS) {
@@ -481,48 +483,57 @@ public class PowerPlayAutonomousRight extends LinearOpMode
             robot.rightBackDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         }
     }
-    public void goTo0(){
-        double distance = 0;
-        newTarget = (int)(distance * ARM_COUNTS_PER_INCH);
-        robot.armExtendor.setTargetPosition(newTarget);
-    }
-    public void goTo1() {
-        double distance = 16;
-        newTarget = (int) (distance * ARM_COUNTS_PER_INCH);
-        robot.armExtendor.setTargetPosition(newTarget);
-    }
-    public void goTo2() {
-        double distance = 26;
-        newTarget = (int) (distance * ARM_COUNTS_PER_INCH);
-        robot.armExtendor.setTargetPosition(newTarget);
-    }
-    public void goTo3() {
-        double distance = 37;
-        newTarget = (int) (distance * ARM_COUNTS_PER_INCH);
-        robot.armExtendor.setTargetPosition(newTarget);
-    }
-    public void goTo4() {
-        double distance = 33;
-        newTarget = (int) (distance * ARM_COUNTS_PER_INCH);
-        robot.armExtendor.setTargetPosition(newTarget);
-    }
     public void goToHeight(double distance) {
 
         newTarget = (int) (distance * ARM_COUNTS_PER_INCH);
-        robot.armExtendor.setTargetPosition(newTarget);
+        robot.armExtendorR.setTargetPosition(newTarget);
+        robot.armExtendorL.setTargetPosition(newTarget);
     }
 
-    public void openClaw() {
-        robot.claw.setPosition(CLAW_OPENED_POSITION);
+    public void goTo1() {
+        double distance = 1;
+        newTarget = (int) (distance * ARM_COUNTS_PER_INCH);
+        robot.armExtendorL.setTargetPosition(newTarget);
+        robot.armExtendorR.setTargetPosition(newTarget);
+        goToFlipper(1);
+    }
+
+    public void goTo2() {
+        double distance = 15;
+        newTarget = (int) (distance * ARM_COUNTS_PER_INCH);
+        robot.armExtendorL.setTargetPosition(newTarget);
+        robot.armExtendorR.setTargetPosition(newTarget);
+        goToFlipper(160);
+    }
+
+    public void goTo3() {
+        double distance = 30;
+        newTarget = (int) (distance * ARM_COUNTS_PER_INCH);
+        robot.armExtendorL.setTargetPosition(newTarget);
+        robot.armExtendorR.setTargetPosition(newTarget);
+        goToFlipper(175);
+    }
+
+    public void goToDrop() {
+        robot.armFlipper.setPower(.5);
+        double angles = 180;
+        int armTarget = (int) (angles * ARMS_COUNT_PER_ANGLE);
+        robot.armFlipper.setTargetPosition(armTarget);
+    }
+
+    public void goToFlipper(double distance) {
+        robot.armFlipper.setPower(.5);
+        newTarget = (int) (distance * ARMS_COUNT_PER_ANGLE);
+        robot.armFlipper.setTargetPosition(newTarget);
     }
     public void closeClaw() {
-        robot.claw.setPosition(CLAW_CLOSED_POSITION);
+        robot.clawR.setPosition(CLAW_CLOSED_POSITION);
+        robot.clawL.setPosition(CLAW_CLOSED_POSITION);
     }
-
-
-
-
-
-
-
+    public void openClaw() {
+        robot.clawR.setPosition(CLAW_OPENED_POSITION);
+        robot.clawL.setPosition(CLAW_OPENED_POSITION);
+    }
 }
+
+

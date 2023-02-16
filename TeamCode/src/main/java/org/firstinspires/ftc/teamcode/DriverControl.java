@@ -6,6 +6,7 @@ import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 
@@ -31,9 +32,10 @@ public class DriverControl extends OpMode {
     Hardwarerobot robot = new Hardwarerobot();
     double slowfactor = 0.5;
     static final double ARM_POWER_LIMIT = .5;
-    static double CLAW_OPENED_POSITION = .90; // flip closed and open
-    static double CLAW_CLOSED_POSITION = 1;
+    static double CLAW_OPENED_POSITION = .08; // flip closed and open
+    static double CLAW_CLOSED_POSITION = 0;
     static double ARM_COUNTS_PER_INCH = 80; //Figure out right number //114.75
+    static double ARMS_COUNT_PER_ANGLE = 7.7394;
     int newTarget = 0;
 
     @Override
@@ -41,9 +43,16 @@ public class DriverControl extends OpMode {
         telemetry.addData("Status", "Initialized");
         robot.init(hardwareMap);
         telemetry.addData("Status", "Ready");
-        robot.armExtendor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        robot.armExtendor.setTargetPosition(newTarget);
-        robot.armExtendor.setPower(0);
+
+        robot.armExtendorL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        robot.armExtendorL.setTargetPosition(newTarget);
+        robot.armExtendorL.setPower(0);
+        robot.armExtendorR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        robot.armExtendorR.setTargetPosition(newTarget);
+        robot.armExtendorR.setPower(0);
+        robot.armFlipper.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        robot.armFlipper.setTargetPosition(newTarget);
+        robot.armFlipper.setPower(1);
     }
 
     @Override
@@ -71,11 +80,14 @@ public class DriverControl extends OpMode {
         double speed;
         double angle;
 
+
         if (gamepad2.a) {
-            robot.claw.setPosition(CLAW_CLOSED_POSITION);
+            robot.clawL.setPosition(CLAW_CLOSED_POSITION);
+            robot.clawR.setPosition(CLAW_CLOSED_POSITION);
         }
         if (gamepad2.b) {
-            robot.claw.setPosition(CLAW_OPENED_POSITION);
+            robot.clawL.setPosition(CLAW_OPENED_POSITION);
+            robot.clawR.setPosition(CLAW_OPENED_POSITION);
         }
 
         if (-gamepad2.left_stick_y > .1) { //me when go up
@@ -83,17 +95,25 @@ public class DriverControl extends OpMode {
             if (newTarget / ARM_COUNTS_PER_INCH > 35.5) {
                 newTarget = (int) (35.5 * ARM_COUNTS_PER_INCH);
             }
-            robot.armExtendor.setTargetPosition(newTarget);
+            robot.armExtendorL.setTargetPosition(newTarget);
+            robot.armExtendorR.setTargetPosition(newTarget);
         }
         if (gamepad2.left_stick_y > .1) {  //go down hehe
             newTarget = (int) (newTarget - 5 * gamepad2.left_stick_y);
 
-            robot.armExtendor.setTargetPosition(newTarget);
+            robot.armExtendorL.setTargetPosition(newTarget);
+            robot.armExtendorR.setTargetPosition(newTarget);
         }
         if (gamepad2.x) {
-            robot.armExtendor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-            robot.armExtendor.setTargetPosition(0);
-            robot.armExtendor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            robot.armExtendorL.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            robot.armExtendorL.setTargetPosition(0);
+            robot.armExtendorL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            robot.armExtendorR.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            robot.armExtendorR.setTargetPosition(0);
+            robot.armExtendorR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        }
+        if (gamepad2.y){
+            goToDrop();
         }
 
         if (gamepad2.dpad_down) {
@@ -126,55 +146,93 @@ public class DriverControl extends OpMode {
         }
 
         //gotta go fast haha wait just kidding
-        //SLAY!!!!!!!
 
         robot.leftFrontDrive.setPower(leftFrontPower);
         robot.leftBackDrive.setPower(leftBackPower);
         robot.rightFrontDrive.setPower(rightFrontPower);
         robot.rightBackDrive.setPower(rightBackPower);
         //robot.armExtendor.setPower(armExtendorPower);
-        robot.armExtendor.setPower(Math.abs(1));
+        robot.armExtendorL.setPower(Math.abs(1));
+        robot.armExtendorR.setPower(Math.abs(1));
         telemetry.addData("Status", "HELLO!");
         telemetry.addData("Status", "DON'T GET ANY PENALTIES OR ELSE...");
+        telemetry.addData("Status","I'M GOING TO LEAVE THE END OF THIS SENTENCE UP FOR INTERPRETATION");
+        telemetry.addData("Status", "FEEL FREE TO BE CREATIVE");
         telemetry.addData("Status", "Run Time: " + runtime.toString());
         telemetry.addData("Motors", "left (%.2f), right (%.2f)", leftFrontPower, rightFrontPower);
         telemetry.addData("claw", "open (%.2f), closed (%.2f)", CLAW_OPENED_POSITION, CLAW_CLOSED_POSITION);
-        telemetry.addData("arm", "arm_status (%.2f)", robot.armExtendor.getCurrentPosition() / ARM_COUNTS_PER_INCH);
-        telemetry.addData("servo position", robot.claw.getPosition());
+        telemetry.addData("arm", "arm_status (%.2f)", robot.armExtendorL.getCurrentPosition() / ARM_COUNTS_PER_INCH);
+        telemetry.addData("arm", "arm_status (%.2f)", robot.armExtendorR.getCurrentPosition() / ARM_COUNTS_PER_INCH);
+        telemetry.addData("servo position", robot.clawL.getPosition());
+        telemetry.addData("servo position", robot.clawR.getPosition());
         telemetry.update();
     }
 
     @Override
     public void stop() {
     }
+    //Slay!!!!!!!!!!
 
     public void goTo0() {
         double distance = 0;
+        robot.armExtendorL.setPower(.5);
+        robot.armExtendorR.setPower(.5);
         newTarget = (int) (distance * ARM_COUNTS_PER_INCH);
-        robot.armExtendor.setTargetPosition(newTarget);
+        robot.armExtendorL.setTargetPosition(newTarget);
+        robot.armExtendorR.setTargetPosition(newTarget);
+        closeClaw();
+        goToFlipper(1);
+    }
+    public void goToHeight(double distance) {
+
+        newTarget = (int) (distance * ARM_COUNTS_PER_INCH);
+        robot.armExtendorR.setTargetPosition(newTarget);
+        robot.armExtendorL.setTargetPosition(newTarget);
     }
 
     public void goTo1() {
-        double distance = 20;
+        double distance = 5;
         newTarget = (int) (distance * ARM_COUNTS_PER_INCH);
-        robot.armExtendor.setTargetPosition(newTarget);
+        robot.armExtendorL.setTargetPosition(newTarget);
+        robot.armExtendorR.setTargetPosition(newTarget);
+        goToDrop();
     }
 
     public void goTo2() {
-        double distance = 32;
+        double distance = 15;
         newTarget = (int) (distance * ARM_COUNTS_PER_INCH);
-        robot.armExtendor.setTargetPosition(newTarget);
+        robot.armExtendorL.setTargetPosition(newTarget);
+        robot.armExtendorR.setTargetPosition(newTarget);
+        goToFlipper(160);
     }
 
     public void goTo3() {
-        double distance = 45;
+        double distance = 30;
         newTarget = (int) (distance * ARM_COUNTS_PER_INCH);
-        robot.armExtendor.setTargetPosition(newTarget);
+        robot.armExtendorL.setTargetPosition(newTarget);
+        robot.armExtendorR.setTargetPosition(newTarget);
+        goToFlipper(175);
     }
 
-    public void goTo4() {
-        double distance = 34;
-        newTarget = (int) (distance * ARM_COUNTS_PER_INCH);
-        robot.armExtendor.setTargetPosition(newTarget);
+    public void goToDrop() {
+        robot.armFlipper.setPower(.5);
+        double angles = 180;
+        int armTarget = (int) (angles * ARMS_COUNT_PER_ANGLE);
+        robot.armFlipper.setTargetPosition(armTarget);
     }
+
+    public void goToFlipper(double distance) {
+        robot.armFlipper.setPower(.5);
+        newTarget = (int) (distance * ARMS_COUNT_PER_ANGLE);
+        robot.armFlipper.setTargetPosition(newTarget);
+    }
+    public void closeClaw() {
+        robot.clawR.setPosition(CLAW_CLOSED_POSITION);
+        robot.clawL.setPosition(CLAW_CLOSED_POSITION);
+    }
+    public void openClaw() {
+        robot.clawR.setPosition(CLAW_OPENED_POSITION);
+        robot.clawL.setPosition(CLAW_OPENED_POSITION);
+    }
+
 }

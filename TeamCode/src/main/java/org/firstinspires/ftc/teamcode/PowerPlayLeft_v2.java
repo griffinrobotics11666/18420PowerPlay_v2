@@ -27,7 +27,7 @@ import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
 import java.util.Locale;
-
+/*
 @Autonomous(name = "Left Autonomous PP v2", group = "Autonomous")
 public class PowerPlayLeft_v2 extends LinearOpMode
 {
@@ -583,3 +583,5 @@ public class PowerPlayLeft_v2 extends LinearOpMode
         robot.claw.setPosition(CLAW_CLOSED_POSITION);
     }
 }
+
+ */

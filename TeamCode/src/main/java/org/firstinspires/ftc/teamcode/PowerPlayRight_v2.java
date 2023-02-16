@@ -26,8 +26,7 @@ import org.openftc.easyopencv.OpenCvWebcam;
 import java.util.Locale;
 
 @Autonomous(name = "Right Autonomous PP v2", group = "Autonomous")
-public class PowerPlayRight_v2 extends LinearOpMode
-{
+public class PowerPlayRight_v2 extends LinearOpMode {
     FtcDashboard dashboard = FtcDashboard.getInstance();
 
     OpenCvWebcam webcam;
@@ -43,26 +42,27 @@ public class PowerPlayRight_v2 extends LinearOpMode
 
     private ElapsedTime runtime = new ElapsedTime();
 
-    static final double     COUNTS_PER_MOTOR_REV    = 1440 ;
-    static final double     DRIVE_GEAR_REDUCTION    = 1.0 ;
-    static final double     WHEEL_DIAMETER_INCHES   = 4.5 ;
-    static final double     COUNTS_PER_INCH         = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) /
-            (WHEEL_DIAMETER_INCHES * 3.1415)/2.29; //find out actual number
-    static final double     STRAFE_COUNTS_PER_INCH  = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) /
-            (WHEEL_DIAMETER_INCHES * 3.1415)/1.86;
-    static final double     DRIVE_SPEED             = 0.6;
-    static final double     TURN_SPEED              = 0.5;
+    static final double COUNTS_PER_MOTOR_REV = 1440;
+    static final double DRIVE_GEAR_REDUCTION = 1.0;
+    static final double WHEEL_DIAMETER_INCHES = 4.5;
+    static final double COUNTS_PER_INCH = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) /
+            (WHEEL_DIAMETER_INCHES * 3.1415) / 2.29; //find out actual number
+    static final double STRAFE_COUNTS_PER_INCH = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) /
+            (WHEEL_DIAMETER_INCHES * 3.1415) / 1.86;
+    static final double DRIVE_SPEED = 0.6;
+    static final double TURN_SPEED = 0.5;
 
-    static final double     HEADING_THRESHOLD       = .5 ;
-    static final double     P_TURN_COEFF            = 0.075; //TODO MODIFY THIS
-    static final double     P_DRIVE_COEFF           = 0.05;
+    static final double HEADING_THRESHOLD = .5;
+    static final double P_TURN_COEFF = 0.075; //TODO MODIFY THIS
+    static final double P_DRIVE_COEFF = 0.05;
     static double ARM_COUNTS_PER_INCH = 80; //Figure out right number // 114.75
-    int newTarget=0;
+    int newTarget = 0;
     static double CLAW_CLOSED_POSITION = 1.1; // flip closed and open
     static double CLAW_OPENED_POSITION = .90;
 
     @Override
     public void runOpMode() {
+        /*
         robot.init(hardwareMap);
         // int urMom;
         BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
@@ -576,5 +576,8 @@ public class PowerPlayRight_v2 extends LinearOpMode
     }
     public void closeClaw() {
         robot.claw.setPosition(CLAW_CLOSED_POSITION);
+    }
+}
+*/
     }
 }
