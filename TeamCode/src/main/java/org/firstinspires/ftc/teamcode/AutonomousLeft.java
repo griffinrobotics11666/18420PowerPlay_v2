@@ -176,6 +176,7 @@ public class AutonomousLeft extends LinearOpMode {
 
         switch (getAnalysis) {
             /*
+
             case LEFT: { //one
                 gyroDrive(.6,11,90);
                 sleep(100);
@@ -183,7 +184,9 @@ public class AutonomousLeft extends LinearOpMode {
                 sleep(100);
                 gyroDrive(.6,8,140);
                 break;
+
             }
+
             case CENTER: { //two
                 gyroDrive(.4,-6,90);
                 gyroTurn(.6,180);
@@ -193,6 +196,7 @@ public class AutonomousLeft extends LinearOpMode {
                 gyroDrive(.6,8,180);
                 break;
             }
+
              */
 
             case RIGHT: { //three
@@ -593,3 +597,5 @@ public class AutonomousLeft extends LinearOpMode {
         robot.clawL.setPosition(CLAW_OPENED_POSITION);
     }
 }
+
+
