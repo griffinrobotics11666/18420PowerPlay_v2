@@ -126,6 +126,15 @@ public class DriverControl extends OpMode {
             goTo3();
         }
 
+        if (gamepad2.left_bumper){
+            goToFlipper(130);
+            closeClaw();
+        }
+        if (gamepad2.right_bumper){
+            closeClaw();
+            goToFlipper(1);
+        }
+
         //haha look see? this is so beautiful. you smell. <3
 
 
@@ -222,7 +231,7 @@ public class DriverControl extends OpMode {
     }
 
     public void goToFlipper(double distance) {
-        robot.armFlipper.setPower(.5);
+        robot.armFlipper.setPower(.4);
         newTarget = (int) (distance * ARMS_COUNT_PER_ANGLE);
         robot.armFlipper.setTargetPosition(newTarget);
     }

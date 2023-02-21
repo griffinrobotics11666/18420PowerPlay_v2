@@ -111,44 +111,106 @@ public class AutonomousLeft extends LinearOpMode {
         telemetry.addData("Snapshot post-START analysis", getAnalysis);
         telemetry.update();
 
-       closeClaw();
-       gyroStrafe(.8,-3,0);
-       gyroDrive(.6,48,0);
-       sleep(300);
-       gyroTurn(.8,60);
-       sleep(1000);
-       gyroDrive(.4,5,60);
-       goTo2();
-       sleep(3000);
-       gyroDrive(.4,-4,60);
-       sleep(1000);
-       openClaw();
-       sleep(1000);
-       goTo1();
-       sleep(1000);
-       goToFlipper(1);
+        closeClaw();
+        gyroStrafe(.8,-3,0);
+        goToFlipper(30);
+        gyroDrive(.6,48,0);
+        sleep(300);
+        gyroTurn(.8,56);
+        sleep(800);
+        gyroDrive(.4,7,56);
+        closeClaw();
+        goTo2();
+        sleep(3000);
+        gyroDrive(.4,-3,56);
+        sleep(500);
+        goToFlipper(190);
+        sleep(500);
+        openClaw();                                        //drops first cone
+        sleep(800);
+        closeClaw();
+        sleep(100);
+        goToFlipper(1);
+        goTo0();
+        sleep(1000);
+        gyroTurn(.6,90);
+        sleep(100);
+        gyroTurn(1,90);
+        sleep(100);
+        goToFlipper(37);
+        openClaw();
+        sleep(500);
+        gyroDrive(.4,17,90);
+        sleep(700);
+        closeClaw();
+        sleep(500);
+        goToFlipper(90);
+        sleep(100);
+        gyroDrive(.4,-13,90);
+        sleep(100);
+        gyroTurn(.4,60);
+        sleep(100);
+        goTo2();
+        goToFlipper(150);
+        sleep(1000);
+        gyroDrive(.4,-4,60);
+        sleep(300);
+        gyroTurn(1,60);
+        sleep(100);
+        goToFlipper(190);
+        sleep(500);
+        openClaw();                                             //drops second cone
+        sleep(1000);
+        closeClaw();
+        goToFlipper(90);
+        sleep(500);
+        goTo0();
+        sleep(1000);
+        gyroTurn(.4,90);
+        sleep(100);
+        gyroTurn(1,90);
+        openClaw();
+        sleep(100);
+        gyroStrafe(.4,3,90);
+        sleep(100);
 
-
-
-        /*switch (getAnalysis) {
+        switch (getAnalysis) {
+            /*
 
             case LEFT: { //one
-                gyroDrive(.6,48,95);
+                gyroDrive(.6,11,90);
+                sleep(100);
+                gyroTurn(.6,140);
+                sleep(100);
+                gyroDrive(.6,8,140);
                 break;
+
             }
 
             case CENTER: { //two
-                gyroDrive(.6,24,95);
+                gyroDrive(.4,-6,90);
+                gyroTurn(.6,180);
+                sleep(100);
+                gyroTurn(1,180);
+                sleep(100);
+                gyroDrive(.6,8,180);
                 break;
             }
 
+             */
+
             case RIGHT: { //three
+                gyroDrive(.6,-27,90);
+                sleep(100);
+                gyroTurn(.8,180);
+                sleep(100);
+                gyroTurn(1,180);
+                sleep(100);
+                gyroDrive(.6,8,180);
                 break;
             }
 
         }
-
-         */
     }
 
     public void encoderDrive(double speed,
@@ -490,8 +552,8 @@ public class AutonomousLeft extends LinearOpMode {
         robot.armExtendorL.setTargetPosition(newTarget);
     }
 
-    public void goTo1() {
-        double distance = 1;
+    public void goTo0() {
+        double distance = 0;
         newTarget = (int) (distance * ARM_COUNTS_PER_INCH);
         robot.armExtendorL.setTargetPosition(newTarget);
         robot.armExtendorR.setTargetPosition(newTarget);
@@ -499,7 +561,7 @@ public class AutonomousLeft extends LinearOpMode {
     }
 
     public void goTo2() {
-        double distance = 15;
+        double distance = 17;
         newTarget = (int) (distance * ARM_COUNTS_PER_INCH);
         robot.armExtendorL.setTargetPosition(newTarget);
         robot.armExtendorR.setTargetPosition(newTarget);
@@ -516,7 +578,7 @@ public class AutonomousLeft extends LinearOpMode {
 
     public void goToDrop() {
         robot.armFlipper.setPower(.5);
-        double angles = 180;
+        double angles = 160;
         int armTarget = (int) (angles * ARMS_COUNT_PER_ANGLE);
         robot.armFlipper.setTargetPosition(armTarget);
     }
