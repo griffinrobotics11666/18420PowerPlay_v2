@@ -51,7 +51,7 @@ public class AutonomousRight extends LinearOpMode {
     static final double HEADING_THRESHOLD = .5;
     static final double P_TURN_COEFF = 0.075;
     static final double P_DRIVE_COEFF = 0.05;
-    static double ARM_COUNTS_PER_INCH = 114.75; //Figure out right number
+    static double ARM_COUNTS_PER_INCH = 80; //Figure out right number
     int newTarget = 0;
     static double CLAW_CLOSED_POSITION = 0; // flip closed and open
     static double CLAW_OPENED_POSITION = .08;
@@ -111,19 +111,92 @@ public class AutonomousRight extends LinearOpMode {
         telemetry.update();
 
         closeClaw();
+        gyroStrafe(.8,3,0);
+        goToFlipper(25);
+        gyroDrive(.6,48,0);
+        sleep(200);
+        gyroTurn(.8,-55);
+        sleep(500);
+        gyroDrive(.4,8,-55);
+        closeClaw();
+        goTo2();
+        sleep(2000);
+        gyroDrive(.4,-5,-55);
+        gyroTurn(.4,-55);
+        sleep(500);
+        openClaw();                                               //drops first cone
+        sleep(800);
+        closeClaw();
+        goTo0();
+        sleep(1000);
+        goToFlipper(1);
+        sleep(800);
+        gyroTurn(.6,-90);
+        sleep(100);
+        gyroTurn(.6,-90);
+        sleep(100);
+        goToFlipper(45);
+        openClaw();
+        sleep(500);
+        gyroDrive(.4,16.5,-90);
+        sleep(700);
+        closeClaw();
+        sleep(500);
+        goToFlipper(90);
+        sleep(100);
+        gyroDrive(.4,-13,-90);
+        sleep(100);
+        gyroTurn(.4,-55);
+        gyroStrafe(.4,-2,-55);
+        gyroDrive(.4,3,-55);
+        goTo2();
+        goToFlipper(150);
+        sleep(1000);
+        gyroDrive(.4,-5,-55);
+        sleep(300);
+        goToFlipper(190);
+        sleep(500);
+        openClaw();                                             //drops second cone
+        sleep(500);
+        closeClaw();
+        goToFlipper(90);
+        sleep(300);
+        goTo0();
+        sleep(1000);
+        gyroTurn(.4,-90);
+        sleep(100);
+        gyroTurn(1,-90);
+        openClaw();
+        sleep(100);
 
         switch (getAnalysis) {
             case LEFT: {
+                gyroDrive(.6,-27,-90);
+                sleep(100);
+                gyroTurn(.8,-180);
+                sleep(100);
+                gyroTurn(1,-180);
+                sleep(100);
+                gyroDrive(.6,8,-180);
                 break;
             }
 
             case CENTER: {
-                gyroDrive(.6, 21, -85);
+                gyroDrive(.4,-6,-90);
+                gyroTurn(.6,-180);
+                sleep(100);
+                gyroTurn(1,-180);
+                sleep(100);
+                gyroDrive(.6,8,-180);
                 break;
             }
 
             case RIGHT: {
-                gyroDrive(.6, 48, -85);
+                gyroDrive(.6,11,-90);
+                sleep(100);
+                gyroTurn(.6,-140);
+                sleep(100);
+                gyroDrive(.6,8,-140);
                 break;
             }
 
@@ -504,11 +577,11 @@ public class AutonomousRight extends LinearOpMode {
     }
 
     public void goTo2() {
-        double distance = 15;
+        double distance = 17;
         newTarget = (int) (distance * ARM_COUNTS_PER_INCH);
         robot.armExtendorL.setTargetPosition(newTarget);
         robot.armExtendorR.setTargetPosition(newTarget);
-        goToFlipper(160);
+        goToFlipper(165);
     }
 
     public void goTo3() {
@@ -540,9 +613,3 @@ public class AutonomousRight extends LinearOpMode {
         robot.clawL.setPosition(CLAW_OPENED_POSITION);
     }
 }
-
-
-
-
-
-
