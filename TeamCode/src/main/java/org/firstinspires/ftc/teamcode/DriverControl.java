@@ -32,11 +32,13 @@ public class DriverControl extends OpMode {
     Hardwarerobot robot = new Hardwarerobot();
     double slowfactor = 0.5;
     static final double ARM_POWER_LIMIT = .5;
-    static double CLAW_OPENED_POSITION = .08; // flip closed and open
+    static double CLAW_OPENED_POSITION = .1; // flip closed and open
     static double CLAW_CLOSED_POSITION = 0;
+    static double CLAW_MEDIUM_POSITION = 0.02;
     static double ARM_COUNTS_PER_INCH = 80; //Figure out right number //114.75
     static double ARMS_COUNT_PER_ANGLE = 7.7394;
     int newTarget = 0;
+    public int armState = 0;
 
     @Override
     public void init() {
@@ -127,12 +129,27 @@ public class DriverControl extends OpMode {
         }
 
         if (gamepad2.left_bumper){
-            goToFlipper(130);
+            goToFlipper(130,.8);
             closeClaw();
         }
         if (gamepad2.right_bumper){
             closeClaw();
-            goToFlipper(1);
+            goToFlipper(1,.3);
+        }
+
+        if (-gamepad2.right_stick_y > .1) { //me when go up
+            robot.armFlipper.setPower(.5);
+            newTarget = (int) (newTarget + 5 * -gamepad2.right_stick_y);
+            if (newTarget / ARMS_COUNT_PER_ANGLE > 180) {
+                newTarget = (int) (180   * ARMS_COUNT_PER_ANGLE);
+            }
+            robot.armFlipper.setTargetPosition(newTarget);
+        }
+        if (gamepad2.right_stick_y > .1) {  //go down hehe
+            robot.armFlipper.setPower(.5);
+            newTarget = (int) (newTarget - 5 * gamepad2.right_stick_y);
+
+            robot.armFlipper.setTargetPosition(newTarget);
         }
 
         //haha look see? this is so beautiful. you smell. <3
@@ -174,6 +191,7 @@ public class DriverControl extends OpMode {
         telemetry.addData("arm", "arm_status (%.2f)", robot.armExtendorR.getCurrentPosition() / ARM_COUNTS_PER_INCH);
         telemetry.addData("servo position", robot.clawL.getPosition());
         telemetry.addData("servo position", robot.clawR.getPosition());
+        telemetry.addData("armFlipper angle", robot.armFlipper.getCurrentPosition() / ARMS_COUNT_PER_ANGLE);
         telemetry.update();
     }
 
@@ -189,8 +207,15 @@ public class DriverControl extends OpMode {
         newTarget = (int) (distance * ARM_COUNTS_PER_INCH);
         robot.armExtendorL.setTargetPosition(newTarget);
         robot.armExtendorR.setTargetPosition(newTarget);
-        closeClaw();
-        goToFlipper(1);
+        semiOpenClaw();
+        if (armState == 1) {
+            goToFlipper(1,.3);
+        }
+        else {
+            goToFlipper(1,.8);
+        }
+
+        armState = 0;
     }
     public void goToHeight(double distance) {
 
@@ -200,11 +225,12 @@ public class DriverControl extends OpMode {
     }
 
     public void goTo1() {
-        double distance = 5;
+        double distance = 7.5;
         newTarget = (int) (distance * ARM_COUNTS_PER_INCH);
         robot.armExtendorL.setTargetPosition(newTarget);
         robot.armExtendorR.setTargetPosition(newTarget);
         goToDrop();
+        armState = 1;
     }
 
     public void goTo2() {
@@ -212,26 +238,25 @@ public class DriverControl extends OpMode {
         newTarget = (int) (distance * ARM_COUNTS_PER_INCH);
         robot.armExtendorL.setTargetPosition(newTarget);
         robot.armExtendorR.setTargetPosition(newTarget);
-        goToFlipper(160);
+        goToFlipper(160,.5);
+        armState = 2;
     }
 
     public void goTo3() {
-        double distance = 30;
+        double distance = 28;
         newTarget = (int) (distance * ARM_COUNTS_PER_INCH);
         robot.armExtendorL.setTargetPosition(newTarget);
         robot.armExtendorR.setTargetPosition(newTarget);
-        goToFlipper(175);
+        goToFlipper(155,.8);
+        armState = 3;
     }
 
     public void goToDrop() {
-        robot.armFlipper.setPower(.5);
-        double angles = 180;
-        int armTarget = (int) (angles * ARMS_COUNT_PER_ANGLE);
-        robot.armFlipper.setTargetPosition(armTarget);
+        goToFlipper(180,.3);
     }
 
-    public void goToFlipper(double distance) {
-        robot.armFlipper.setPower(.4);
+    public void goToFlipper(double distance, double speed) {
+        robot.armFlipper.setPower(speed);
         newTarget = (int) (distance * ARMS_COUNT_PER_ANGLE);
         robot.armFlipper.setTargetPosition(newTarget);
     }
@@ -242,6 +267,10 @@ public class DriverControl extends OpMode {
     public void openClaw() {
         robot.clawR.setPosition(CLAW_OPENED_POSITION);
         robot.clawL.setPosition(CLAW_OPENED_POSITION);
+    }
+    public void semiOpenClaw(){
+        robot.clawR.setPosition(CLAW_MEDIUM_POSITION);
+        robot.clawL.setPosition(CLAW_MEDIUM_POSITION);
     }
 
 }
