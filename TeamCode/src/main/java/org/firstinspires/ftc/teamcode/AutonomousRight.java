@@ -616,9 +616,3 @@ public class AutonomousRight extends LinearOpMode {
         //robot.clawL.setPosition(CLAW_OPENED_POSITION);
     }
 }
-
-
-
-
-
-

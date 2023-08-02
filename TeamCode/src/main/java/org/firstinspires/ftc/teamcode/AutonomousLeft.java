@@ -121,13 +121,13 @@ public class AutonomousLeft extends LinearOpMode {
         goToFlipper(30);
         gyroDrive(.6,48,0);
         sleep(300);
-        gyroTurn(.8,56);
+        gyroTurn(.8,45);
         sleep(800);
-        gyroDrive(.4,7,56);
+        gyroDrive(.4,5,45);
         closeClaw();
         goTo2();
         sleep(3000);
-        gyroDrive(.4,-3,56);
+        gyroDrive(.4,-1,45);
         sleep(500);
         goToFlipper(190);
         sleep(500);
@@ -142,25 +142,25 @@ public class AutonomousLeft extends LinearOpMode {
         sleep(100);
         gyroTurn(1,90);
         sleep(100);
-        goToFlipper(37);
+        goToFlipper(43);
         openClaw();
         sleep(500);
-        gyroDrive(.4,17,90);
+        gyroDrive(.4,18,90);
         sleep(700);
         closeClaw();
         sleep(500);
         goToFlipper(90);
         sleep(100);
-        gyroDrive(.4,-13,90);
+        gyroDrive(.4,-17,90);
         sleep(100);
-        gyroTurn(.4,60);
+        gyroTurn(.4,45);
         sleep(100);
         goTo2();
         goToFlipper(150);
         sleep(1000);
-        gyroDrive(.4,-4,60);
-        sleep(300);
-        gyroTurn(1,60);
+        //gyroDrive(.4,-4,60);
+       // sleep(300);
+        gyroTurn(1,45);
         sleep(100);
         goToFlipper(190);
         sleep(500);
@@ -180,14 +180,15 @@ public class AutonomousLeft extends LinearOpMode {
         sleep(100);
 
         switch (getAnalysis) {
-            /*
 
             case LEFT: { //one
                 gyroDrive(.6,11,90);
                 sleep(100);
-                gyroTurn(.6,140);
+                gyroTurn(.6,180);
                 sleep(100);
-                gyroDrive(.6,8,140);
+                gyroStrafe(.4,7,180);
+                sleep(100);
+                gyroDrive(.6,8,180);
                 break;
 
             }
@@ -202,7 +203,6 @@ public class AutonomousLeft extends LinearOpMode {
                 break;
             }
 
-             */
 
             case RIGHT: { //three
                 gyroDrive(.6,-27,90);
