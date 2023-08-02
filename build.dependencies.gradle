@@ -1,6 +1,7 @@
 repositories {
     mavenCentral()
     google() // Needed for androidx
+    maven { url = 'https://maven.brott.dev/' }
     flatDir {
         dirs rootProject.file('libs')
     }
@@ -21,6 +22,8 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.2.0'
     implementation 'org.firstinspires.ftc:gameAssets-PowerPlay:1.0.0'
     implementation 'com.acmerobotics.dashboard:dashboard:0.4.6'
+//    implementation 'com.qualcomm.hardware.rev:RevHubOrientationOnRobot:'
+    implementation 'com.acmerobotics.dashboard:dashboard:0.4.8'
     //implementation 'com.github.deltacv:EOCV-Sim:3.3.2' //add the EOCV-Sim dependency
 }
 

@@ -43,7 +43,7 @@ public class DriverControl extends OpMode {
         telemetry.addData("Status", "Initialized");
         robot.init(hardwareMap);
         telemetry.addData("Status", "Ready");
-
+/*
         robot.armExtendorL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         robot.armExtendorL.setTargetPosition(newTarget);
         robot.armExtendorL.setPower(0);
@@ -53,6 +53,8 @@ public class DriverControl extends OpMode {
         robot.armFlipper.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         robot.armFlipper.setTargetPosition(newTarget);
         robot.armFlipper.setPower(1);
+
+ */
     }
 
     @Override
@@ -80,7 +82,7 @@ public class DriverControl extends OpMode {
         double speed;
         double angle;
 
-
+/*
         if (gamepad2.a) {
             robot.clawL.setPosition(CLAW_CLOSED_POSITION);
             robot.clawR.setPosition(CLAW_CLOSED_POSITION);
@@ -139,6 +141,8 @@ public class DriverControl extends OpMode {
 
 
         //armExtendorPower = Range.scale(extend,-1 ,1,-ARM_POWER_LIMIT,ARM_POWER_LIMIT);
+
+ */
         leftFrontPower = Range.clip(drive + turn + strafe, -1.0, 1.0);
         leftBackPower = Range.clip(drive + turn - strafe, -1.0, 1.0);
         rightFrontPower = Range.clip(drive - turn - strafe, -1.0, 1.0);
@@ -161,8 +165,8 @@ public class DriverControl extends OpMode {
         robot.rightFrontDrive.setPower(rightFrontPower);
         robot.rightBackDrive.setPower(rightBackPower);
         //robot.armExtendor.setPower(armExtendorPower);
-        robot.armExtendorL.setPower(Math.abs(1));
-        robot.armExtendorR.setPower(Math.abs(1));
+        //robot.armExtendorL.setPower(Math.abs(1));
+        //robot.armExtendorR.setPower(Math.abs(1));
         telemetry.addData("Status", "HELLO!");
         telemetry.addData("Status", "DON'T GET ANY PENALTIES OR ELSE...");
         telemetry.addData("Status","I'M GOING TO LEAVE THE END OF THIS SENTENCE UP FOR INTERPRETATION");
@@ -170,10 +174,10 @@ public class DriverControl extends OpMode {
         telemetry.addData("Status", "Run Time: " + runtime.toString());
         telemetry.addData("Motors", "left (%.2f), right (%.2f)", leftFrontPower, rightFrontPower);
         telemetry.addData("claw", "open (%.2f), closed (%.2f)", CLAW_OPENED_POSITION, CLAW_CLOSED_POSITION);
-        telemetry.addData("arm", "arm_status (%.2f)", robot.armExtendorL.getCurrentPosition() / ARM_COUNTS_PER_INCH);
-        telemetry.addData("arm", "arm_status (%.2f)", robot.armExtendorR.getCurrentPosition() / ARM_COUNTS_PER_INCH);
-        telemetry.addData("servo position", robot.clawL.getPosition());
-        telemetry.addData("servo position", robot.clawR.getPosition());
+        //telemetry.addData("arm", "arm_status (%.2f)", robot.armExtendorL.getCurrentPosition() / ARM_COUNTS_PER_INCH);
+        //telemetry.addData("arm", "arm_status (%.2f)", robot.armExtendorR.getCurrentPosition() / ARM_COUNTS_PER_INCH);
+       // telemetry.addData("servo position", robot.clawL.getPosition());
+        //telemetry.addData("servo position", robot.clawR.getPosition());
         telemetry.update();
     }
 
@@ -181,7 +185,7 @@ public class DriverControl extends OpMode {
     public void stop() {
     }
     //Slay!!!!!!!!!!
-
+/*
     public void goTo0() {
         double distance = 0;
         robot.armExtendorL.setPower(.5);
@@ -243,5 +247,7 @@ public class DriverControl extends OpMode {
         robot.clawR.setPosition(CLAW_OPENED_POSITION);
         robot.clawL.setPosition(CLAW_OPENED_POSITION);
     }
+
+ */
 
 }

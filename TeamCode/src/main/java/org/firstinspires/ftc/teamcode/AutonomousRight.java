@@ -90,12 +90,15 @@ public class AutonomousRight extends LinearOpMode {
         imu.startAccelerationIntegration(new Position(), new Velocity(), 1000);
         angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
         gravity = imu.getGravity();
+        /*
         robot.armExtendorR.setTargetPosition(newTarget);
         robot.armExtendorL.setTargetPosition(newTarget);
         robot.armExtendorR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         robot.armExtendorL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         robot.armExtendorR.setPower(0);
         robot.armExtendorL.setPower(0);
+
+         */
         telemetry.addData(">", "Press Play to start op mode");
         telemetry.update();
         while (opModeInInit()) {
@@ -105,8 +108,8 @@ public class AutonomousRight extends LinearOpMode {
 
         }
         getAnalysis = pipeline.getAnalysis();
-        robot.armExtendorR.setPower(1);
-        robot.armExtendorL.setPower(1);
+        //robot.armExtendorR.setPower(1);
+        //robot.armExtendorL.setPower(1);
         telemetry.addData("Snapshot post-START analysis", getAnalysis);
         telemetry.update();
 
@@ -553,64 +556,64 @@ public class AutonomousRight extends LinearOpMode {
 
     public void goTo0() {
         double distance = 0;
-        robot.armExtendorL.setPower(.5);
-        robot.armExtendorR.setPower(.5);
+        //robot.armExtendorL.setPower(.5);
+        //robot.armExtendorR.setPower(.5);
         newTarget = (int) (distance * ARM_COUNTS_PER_INCH);
-        robot.armExtendorL.setTargetPosition(newTarget);
-        robot.armExtendorR.setTargetPosition(newTarget);
+        //robot.armExtendorL.setTargetPosition(newTarget);
+        //robot.armExtendorR.setTargetPosition(newTarget);
         closeClaw();
         goToFlipper(1);
     }
     public void goToHeight(double distance) {
 
         newTarget = (int) (distance * ARM_COUNTS_PER_INCH);
-        robot.armExtendorR.setTargetPosition(newTarget);
-        robot.armExtendorL.setTargetPosition(newTarget);
+        //robot.armExtendorR.setTargetPosition(newTarget);
+        //robot.armExtendorL.setTargetPosition(newTarget);
     }
 
     public void goTo1() {
         double distance = 5;
         newTarget = (int) (distance * ARM_COUNTS_PER_INCH);
-        robot.armExtendorL.setTargetPosition(newTarget);
-        robot.armExtendorR.setTargetPosition(newTarget);
+        //robot.armExtendorL.setTargetPosition(newTarget);
+        //robot.armExtendorR.setTargetPosition(newTarget);
         goToDrop();
     }
 
     public void goTo2() {
         double distance = 17;
         newTarget = (int) (distance * ARM_COUNTS_PER_INCH);
-        robot.armExtendorL.setTargetPosition(newTarget);
-        robot.armExtendorR.setTargetPosition(newTarget);
+        //robot.armExtendorL.setTargetPosition(newTarget);
+        //robot.armExtendorR.setTargetPosition(newTarget);
         goToFlipper(165);
     }
 
     public void goTo3() {
         double distance = 30;
         newTarget = (int) (distance * ARM_COUNTS_PER_INCH);
-        robot.armExtendorL.setTargetPosition(newTarget);
-        robot.armExtendorR.setTargetPosition(newTarget);
+        //robot.armExtendorL.setTargetPosition(newTarget);
+        //robot.armExtendorR.setTargetPosition(newTarget);
         goToFlipper(175);
     }
 
     public void goToDrop() {
-        robot.armFlipper.setPower(.5);
+        //robot.armFlipper.setPower(.5);
         double angles = 180;
         int armTarget = (int) (angles * ARMS_COUNT_PER_ANGLE);
-        robot.armFlipper.setTargetPosition(armTarget);
+        //robot.armFlipper.setTargetPosition(armTarget);
     }
 
     public void goToFlipper(double distance) {
-        robot.armFlipper.setPower(.5);
+        //robot.armFlipper.setPower(.5);
         newTarget = (int) (distance * ARMS_COUNT_PER_ANGLE);
-        robot.armFlipper.setTargetPosition(newTarget);
+        //robot.armFlipper.setTargetPosition(newTarget);
     }
     public void closeClaw() {
-        robot.clawR.setPosition(CLAW_CLOSED_POSITION);
-        robot.clawL.setPosition(CLAW_CLOSED_POSITION);
+        //robot.clawR.setPosition(CLAW_CLOSED_POSITION);
+        //robot.clawL.setPosition(CLAW_CLOSED_POSITION);
     }
     public void openClaw() {
-        robot.clawR.setPosition(CLAW_OPENED_POSITION);
-        robot.clawL.setPosition(CLAW_OPENED_POSITION);
+        //robot.clawR.setPosition(CLAW_OPENED_POSITION);
+        //robot.clawL.setPosition(CLAW_OPENED_POSITION);
     }
 }
 
