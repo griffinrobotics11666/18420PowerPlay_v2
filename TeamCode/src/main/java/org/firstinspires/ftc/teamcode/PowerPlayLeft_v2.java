@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
@@ -28,6 +29,7 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 
 import java.util.Locale;
 /*
+
 @Autonomous(name = "Left Autonomous PP v2", group = "Autonomous")
 public class PowerPlayLeft_v2 extends LinearOpMode
 {
@@ -571,7 +573,7 @@ public class PowerPlayLeft_v2 extends LinearOpMode
     }
 
     public void goTo4() {
-        double distance = 33;
+        double distance = 33;@Disabled
         newTarget = (int) (distance * ARM_COUNTS_PER_INCH);
         robot.armExtendor.setTargetPosition(newTarget);
     }
@@ -583,5 +585,8 @@ public class PowerPlayLeft_v2 extends LinearOpMode
         robot.claw.setPosition(CLAW_CLOSED_POSITION);
     }
 }
+
+
+
 
  */

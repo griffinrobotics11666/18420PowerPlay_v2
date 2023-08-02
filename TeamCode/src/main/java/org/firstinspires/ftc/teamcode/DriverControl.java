@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode;
 import static java.lang.Thread.sleep;
 
 import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -22,9 +23,9 @@ import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 
 
-// import com.acmerobotics.dashboard.FtcDashboard;
-
-
+import com.acmerobotics.dashboard.FtcDashboard;
+/*
+@Disabled
 @TeleOp(name="Driver control catz are cool", group="TeleOp")
 public class DriverControl extends OpMode {
     private ElapsedTime runtime = new ElapsedTime(); //clock
@@ -274,3 +275,5 @@ public class DriverControl extends OpMode {
     }
 
 }
+
+ */

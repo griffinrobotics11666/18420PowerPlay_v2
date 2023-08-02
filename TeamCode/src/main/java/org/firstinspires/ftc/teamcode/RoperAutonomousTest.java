@@ -22,6 +22,7 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
@@ -46,6 +47,7 @@ import org.openftc.easyopencv.OpenCvWebcam;
  * 100% accurate) method of detecting the skystone when lined up with
  * the sample regions over the first 3 stones.
  */
+@Disabled
 @Autonomous(name = "RoperTest")
 public class RoperAutonomousTest extends LinearOpMode
 {
